@@ -1,55 +1,85 @@
 # Skeleton Launcher
 
-A small, dark-themed Minecraft launcher with instances, Fabric and Quilt, Modrinth mods and modpacks, and JVM tuning. It is a single Java file with no dependencies.
+Skeleton is a simple Minecraft launcher I made so you can keep your game, your mods and your modpacks in one tidy place. Each setup you make is its own "instance", with its own mods, worlds and settings, so playing a big modpack never messes up your plain vanilla game.
 
-## Requirements
+It's one small Java program. No installer, no extra downloads other than the game itself.
 
-- Java 17 or newer to run the launcher
-- Internet access for downloading Minecraft, loaders and mods
+## What you need
 
-## Run
+- Java 17 or newer installed on your computer. If double-clicking the jar does nothing, you probably need to install Java first.
+- An internet connection the first time you play, because Skeleton downloads Minecraft, the mod loader and any mods you pick.
+
+## Starting it
+
+Open a terminal in the folder with the file and run:
 
 ```
 java -jar SkeletonLauncher.jar
 ```
 
-Data is stored in `~/.skeleton` (`%APPDATA%\.skeleton` on Windows). Set `-Dskeleton.home=/some/path` to change it.
+On most computers you can also just double-click the jar.
 
-## Build from source
+Skeleton keeps everything in a hidden folder called `.skeleton` in your home folder (on Windows it's inside `AppData\Roaming`). That's where your instances, mods and worlds live. If you want to move it somewhere else, start it with `-Dskeleton.home=/your/path`.
+
+## Your first game
+
+1. Type a player name in the box at the bottom left.
+2. Click **New instance**. Give it a name, choose a Minecraft version, and pick a loader:
+   - **Vanilla** is the plain game with no mods.
+   - **Fabric** or **Quilt** let you use mods. Fabric has the biggest choice of mods, and Quilt can run most Fabric mods too.
+3. Press **Play**. The first launch takes a while because it's downloading the game. After that it starts quickly.
+
+You can make as many instances as you like and switch between them in the left sidebar.
+
+## The four tabs
+
+**Play** starts the game and shows what's going on: download progress and the game's own messages. While the game is running the button turns into **Stop**. If something breaks, the answer is usually in this log.
+
+**Mods** shows what's installed in the selected instance. You can switch a mod off without deleting it (handy when hunting for a crash), remove it, or open the folder to drop in your own mod files.
+
+**Browse Modrinth** is a built-in search for [Modrinth](https://modrinth.com), a site with thousands of free mods and modpacks. Search, click a result, then **Install selected**.
+- Mods go into the instance you have selected, and anything they depend on is installed too.
+- Modpacks create a brand new instance for you.
+- Leave "Match this instance" ticked and you'll only see mods that work with your Minecraft version and loader, so you don't download things that won't run.
+
+**Settings** is where you change how much memory the game gets, point to a different Java if you need one, add extra Java flags, or delete the instance.
+
+## Modpacks
+
+There are two ways to get one:
+- Search for it in **Browse Modrinth** with the dropdown set to Modpacks.
+- Download a `.mrpack` file from somewhere and click **Import .mrpack**.
+
+Skeleton downloads every mod in the pack and sets up the loader for you. This works for Fabric and Quilt packs. Packs that need Forge or NeoForge won't install, and Skeleton will tell you so instead of failing quietly.
+
+## Making the game run better
+
+- **Add performance mods** (on the Mods tab) installs a well-known set of optimization mods: Sodium, Lithium, FerriteCore, ModernFix, EntityCulling and ImmediatelyFast. It only works on Fabric and Quilt instances, and it skips any that don't have a version for your Minecraft version.
+- **Tuned Java flags** are turned on by default. They change how Java cleans up memory so the game stutters less. You can turn them off in Settings if you'd rather use your own.
+- Downloads run several at a time, and files you already have are skipped.
+
+A reasonable starting point for memory is 4096 MB for a lightly modded game and 6144 MB or more for a big modpack. Giving it far more than it needs doesn't help.
+
+## Good to know
+
+- **Offline accounts only.** Skeleton just uses the player name you type. There's no Microsoft login, so you can't join servers that check for a real account. Singleplayer and LAN work fine.
+- **No Forge or NeoForge.** Only Vanilla, Fabric and Quilt for now.
+- **Java versions matter.** Skeleton runs the game with the same Java it's running on. Newer Minecraft versions are happy with that. Older ones (1.16 and below) usually want Java 8, so install it and put its path in the instance's Settings. Skeleton shows a warning in the log when it spots a mismatch.
+
+## If something goes wrong
+
+Check the log on the Play tab first. If the game closes right away, it's often one of these:
+- A mod that doesn't match your Minecraft version. Switch mods off in the Mods tab one at a time to find it.
+- The wrong Java version, as above.
+- Not enough memory for a big modpack. Raise it in Settings.
+
+## Building it yourself
+
+The source is a single file, `Skeleton.java`.
 
 ```
 javac -d out Skeleton.java
 jar cfe SkeletonLauncher.jar Skeleton -C out . icon.jpg
 ```
 
-Put `icon.jpg` next to the classes so it is bundled as the logo.
-
-## Using it
-
-1. Type a player name in the sidebar.
-2. Click **New instance**, pick a Minecraft version and a loader (Vanilla, Fabric or Quilt).
-3. Press **Play**. The first launch downloads the game, libraries and assets.
-
-### Tabs
-
-- **Play**: launch or stop the game, with a live log and download progress.
-- **Mods**: list, enable or disable, remove, and open the mods folder.
-- **Browse Modrinth**: search mods or modpacks. Mods install into the selected instance with their required dependencies. Modpacks create a new instance. "Match this instance" limits results to the instance's Minecraft version and loader.
-- **Settings**: memory, Java path, extra JVM flags, and tuned JVM flags on or off.
-
-### Modpacks
-
-Use **Browse Modrinth** with Modpacks selected, or **Import .mrpack** for a local file. Fabric and Quilt packs are supported. Forge and NeoForge packs are not.
-
-### Performance
-
-- **Add performance mods** (Mods tab, Fabric or Quilt only) installs Sodium, Lithium, FerriteCore, ModernFix, EntityCulling and ImmediatelyFast where a compatible version exists.
-- Tuned JVM flags (G1GC) are on by default for new instances.
-- Downloads run in parallel and skip files that are already valid.
-
-## Limitations
-
-- Offline accounts only. There is no Microsoft login, so online-mode servers will reject you.
-- No Forge or NeoForge support.
-- The game runs on the same Java as the launcher unless you set a Java path. Minecraft 1.16 and older usually need Java 8.
-- Checksums are verified for Modrinth files and Mojang downloads.
+Put `icon.jpg` (the skeleton face) next to the compiled classes if you want it bundled as the logo.
