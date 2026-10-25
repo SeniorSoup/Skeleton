@@ -52,34 +52,7 @@ There are two ways to get one:
 
 Skeleton downloads every mod in the pack and sets up the loader for you. This works for Fabric and Quilt packs. Packs that need Forge or NeoForge won't install, and Skeleton will tell you so instead of failing quietly.
 
-## Making the game run better
-
-- **Add performance mods** (on the Mods tab) installs a well-known set of optimization mods: Sodium, Lithium, FerriteCore, ModernFix, EntityCulling and ImmediatelyFast. It only works on Fabric and Quilt instances, and it skips any that don't have a version for your Minecraft version.
-- **Tuned Java flags** are turned on by default. They change how Java cleans up memory so the game stutters less. You can turn them off in Settings if you'd rather use your own.
-- Downloads run several at a time, and files you already have are skipped.
-
 A reasonable starting point for memory is 4096 MB for a lightly modded game and 6144 MB or more for a big modpack. Giving it far more than it needs doesn't help.
 
-## Good to know
-
 - **Offline accounts only.** Skeleton just uses the player name you type. There's no Microsoft login, so you can't join servers that check for a real account. Singleplayer and LAN work fine.
-- **No Forge or NeoForge.** Only Vanilla, Fabric and Quilt for now.
-- **Java versions matter.** Skeleton runs the game with the same Java it's running on. Newer Minecraft versions are happy with that. Older ones (1.16 and below) usually want Java 8, so install it and put its path in the instance's Settings. Skeleton shows a warning in the log when it spots a mismatch.
 
-## If something goes wrong
-
-Check the log on the Play tab first. If the game closes right away, it's often one of these:
-- A mod that doesn't match your Minecraft version. Switch mods off in the Mods tab one at a time to find it.
-- The wrong Java version, as above.
-- Not enough memory for a big modpack. Raise it in Settings.
-
-## Building it yourself
-
-The source is a single file, `Skeleton.java`.
-
-```
-javac -d out Skeleton.java
-jar cfe SkeletonLauncher.jar Skeleton -C out . icon.jpg
-```
-
-Put `icon.jpg` (the skeleton face) next to the compiled classes if you want it bundled as the logo.
